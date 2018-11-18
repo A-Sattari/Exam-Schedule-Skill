@@ -1,0 +1,68 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      
+      "invocationName": "cst",
+      
+      "types": [
+        {
+          "name": "CourseName",
+          "values": [
+            {
+              "name": {
+                  "value": "blaw"
+              }
+            },
+            {
+              "name": {
+                  "value": "stats"
+              }
+            }
+          ]
+        }
+      ],
+
+      "intents": [
+        {
+          "name": "HelloWorldIntent",
+          "slots": [],
+          "samples": [
+            "hello",
+            "hi"
+          ]
+        },
+
+        {
+          "name": "ExamDateIntent",
+          "slots": [
+            {
+              "name" : "course",
+              "type" : "CourseName"
+            }
+          ],
+          "samples": [
+            "when is the {course} exam",
+            "what time is the {course} exam",
+            "when is {course}",
+            "what time is {course}",
+            "when {course}",
+            "what time {course}"
+          ]
+        },
+
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        }
+      ]
+    }
+  }
+}
