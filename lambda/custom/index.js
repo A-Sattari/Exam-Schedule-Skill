@@ -1,25 +1,39 @@
 const Alexa = require('ask-sdk-core');
+const speechDB = require('./speechDB');
 
 // Skill builder object
 const skillBuilder = Alexa.SkillBuilders.custom();
 
 /**
- * Initial skill lunch handler.
+ * Initial Lunch Handler.
  */
 const LaunchRequestHandler = {
   // Request Handler for the JSON input that is sent by the Alexa server
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
   },
-
   // Response
   handle(handlerInput) {
-    const greetingText = 'Hi there! Welcome to CST Final Exam Schedule Skill';
+    return handlerInput.responseBuilder.speak(speechDB.greetingText + speechDB.askOption)
+                                       .reprompt(speechDB.reAskOption).getResponse();
+  },
+};
 
-    return handlerInput.responseBuilder.speak(greetingText)
-      .reprompt(greetingText)
-      .withSimpleCard(greetingText)
-      .getResponse();
+/**
+ * Handles the input for user's option name and ask for the desired course.
+ */
+const OptionNameIntentHandler = {
+  // Handler for the JSON request that is sent by the Alexa server
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'OptionNameIntent';
+  },
+
+  // Response 
+  handle(handlerInput) {
+    let optionName = handlerInput.requestEnvelope.request.intent.slots.option.value;
+    const speechText = `Nice! You said ${optionName}`;
+
+    return handlerInput.responseBuilder.speak(speechText).getResponse();
   },
 };
 
@@ -117,9 +131,17 @@ const ErrorHandler = {
 // Export intents
 exports.handler = skillBuilder.addRequestHandlers(
     LaunchRequestHandler,
+    OptionNameIntentHandler,
     ExamDateIntentHandler,
     HelloWorldIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler
   ).addErrorHandlers(ErrorHandler).lambda();
+
+/* TODO:
+    - Ask for option name --> The result(slot) must be out of provided options & if user doesn't answer, skill must ask again
+    - OptionNameIntent
+    - Skill should ask for the course name
+    - Set ID & alias for the courses in slots types
+*/

@@ -19,8 +19,34 @@
               }
             }
           ]
+        },
+
+        {
+          "name": "OptionName",
+          "values": [
+            {
+              "name": {
+                  "value": "cloud",
+                  "synonyms": [
+                    "cloud computing",
+                    "cloud option"
+                ]
+              }
+            },
+            {
+              "name": {
+                  "value": "web and mobile",
+                  "synonyms": [
+                    "web",
+                    "web option",
+                    "web and mobile option"
+                  ]
+              }
+            }
+          ]
         }
       ],
+
 
       "intents": [
         {
@@ -29,6 +55,19 @@
           "samples": [
             "hello",
             "hi"
+          ]
+        },
+
+        {
+          "name": "OptionNameIntent",
+          "slots": [
+            {
+              "name" : "option",
+              "type" : "OptionName"
+            }
+          ],
+          "samples": [
+            "{option}"
           ]
         },
 
@@ -63,6 +102,54 @@
           "samples": []
         }
       ]
+    },
+
+    "dialog": {
+      "intents": [
+          {
+            "name": "OptionNameIntent",
+            "confirmationRequired": false,
+            "prompts": {},
+            "slots": [
+                {
+                  "name": "option",
+                  "type": "OptionName",
+                  "confirmationRequired": false,
+                  "elicitationRequired": true,
+                  "prompts": {
+                      "elicitation": "Elicit.Slot.952914943771.1116060885601"
+                  },
+                  "validations": [
+                      {
+                        "type": "hasEntityResolutionMatch",
+                        "prompt": "Slot.Validation.765768078425.226145408510.1045996993727"
+                      }
+                  ]
+                }
+            ]
+          }
+      ]
+    },
+
+    "prompts": [
+      {
+        "id": "Elicit.Slot.952914943771.1116060885601",
+        "variations": [
+            {
+              "type": "PlainText",
+              "value": "Sorry I didn't understand that. Could you repeat your option name again?"
+            }
+        ]
+      },
+      {
+        "id": "Slot.Validation.765768078425.226145408510.1045996993727",
+        "variations": [
+            {
+                "type": "PlainText",
+                "value": "Gracias"
+            }
+        ]
     }
+    ]
   }
 }
