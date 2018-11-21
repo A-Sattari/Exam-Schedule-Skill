@@ -10,12 +10,38 @@
           "values": [
             {
               "name": {
-                  "value": "blaw"
+                  "value": "BLaw",
+                  "synonyms": ["bushiness law", "law", "BLaw 3600"]
               }
             },
             {
               "name": {
-                  "value": "stats"
+                  "value": "Statistics",
+                  "synonyms": ["stats", "Math 3042", "probability and statistics"]
+              }
+            },
+            {
+              "name": {
+                  "value": "Web Dev",
+                  "synonyms": ["COMP 4711", "ISD", "internet software", "intro to internet software"]
+              }
+            },
+            {
+              "name": {
+                  "value": "OS",
+                  "synonyms": ["COMP 4735", "operating systems"]
+              }
+            },
+            {
+              "name": {
+                  "value": "Serverless",
+                  "synonyms": ["COMP 4968", "server less", "serverless and micro services"]
+              }
+            },
+            {
+              "name": {
+                  "value": "Dev Ops",
+                  "synonyms": ["COMP 4964", "devops"]
               }
             }
           ]
@@ -42,24 +68,33 @@
                     "web and mobile option"
                   ]
               }
+            },
+            {
+              "name": {
+                  "value": "database",
+                  "synonyms": ["databases"]
+              }
+            },
+            {
+              "name": {
+                  "value": "AI",
+                  "synonyms": [
+                    "artificial intelligence",
+                    "artificial intelligence and machine learning",
+                    "machine leaning",
+                    "AI option",
+                    "artificial intelligence option",
+                    "machine learning option"
+                ]
+              }
             }
           ]
         }
       ],
 
-
       "intents": [
         {
-          "name": "HelloWorldIntent",
-          "slots": [],
-          "samples": [
-            "hello",
-            "hi"
-          ]
-        },
-
-        {
-          "name": "OptionNameIntent",
+          "name": "OptionSelectionIntent",
           "slots": [
             {
               "name" : "option",
@@ -68,6 +103,19 @@
           ],
           "samples": [
             "{option}"
+          ]
+        },
+
+        {
+          "name": "CourseSelectionIntent",
+          "slots": [
+            {
+              "name" : "course",
+              "type" : "CourseName"
+            }
+          ],
+          "samples": [
+            "{course}"
           ]
         },
 
@@ -107,7 +155,7 @@
     "dialog": {
       "intents": [
           {
-            "name": "OptionNameIntent",
+            "name": "OptionSelectionIntent",
             "confirmationRequired": false,
             "prompts": {},
             "slots": [
@@ -127,7 +175,27 @@
                   ]
                 }
             ]
-          }
+          },
+          {
+            "name": "CourseSelectionIntent",
+            "confirmationRequired": false,
+            "prompts": {},
+            "slots": [
+                {
+                    "name": "course",
+                    "type": "CourseName",
+                    "confirmationRequired": false,
+                    "elicitationRequired": false,
+                    "prompts": {},
+                    "validations": [
+                        {
+                            "type": "hasEntityResolutionMatch",
+                            "prompt": "Slot.Validation.879824208208.228579593021.681240884564"
+                        }
+                    ]
+                }
+            ]
+        }
       ]
     },
 
@@ -145,11 +213,20 @@
         "id": "Slot.Validation.765768078425.226145408510.1045996993727",
         "variations": [
             {
-                "type": "PlainText",
-                "value": "Gracias"
+              "type": "PlainText",
+              "value": "Gracias"
             }
         ]
-    }
+      },
+      {
+        "id": "Slot.Validation.879824208208.228579593021.681240884564",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "."
+          }
+        ]
+      }
     ]
   }
 }

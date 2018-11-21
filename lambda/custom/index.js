@@ -15,24 +15,40 @@ const LaunchRequestHandler = {
   // Response
   handle(handlerInput) {
     return handlerInput.responseBuilder.speak(speechDB.greetingText + speechDB.askOption)
-                                       .reprompt(speechDB.reAskOption).getResponse();
+            .reprompt(speechDB.reAskOption).getResponse();
   },
 };
 
 /**
- * Handles the input for user's option name and ask for the desired course.
+ * Handles user's option choice and ask for a desired course.
  */
-const OptionNameIntentHandler = {
+const OptionSelectionIntentHandler = {
   // Handler for the JSON request that is sent by the Alexa server
   canHandle(handlerInput) {
-    return handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'OptionNameIntent';
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'OptionSelectionIntent';
   },
 
   // Response 
   handle(handlerInput) {
-    let optionName = handlerInput.requestEnvelope.request.intent.slots.option.value;
-    const speechText = `Nice! You said ${optionName}`;
+    // let optionName = handlerInput.requestEnvelope.request.intent.slots.option.value;
+    return handlerInput.responseBuilder.speak(speechDB.thank + speechDB.askCourse)
+            .reprompt(speechDB.askCourse).getResponse();
+  },
+};
 
+/**
+ * Handles user's course choice.
+ */
+const CourseSelectionIntentHandler = {  
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'CourseSelectionIntent';
+  },
+  
+  handle(handlerInput) {
+    let courseName = handlerInput.requestEnvelope.request.intent.slots.course.resolutions.resolutionsPerAuthority;
+    courseName = (((courseName[0].values)[0]).value.name).toLowerCase();
+    
+    const speechText = `Your choice is ${courseName}`;
     return handlerInput.responseBuilder.speak(speechText).getResponse();
   },
 };
@@ -54,23 +70,7 @@ const ExamDateIntentHandler = {
   },
 };
 
-const HelloWorldIntentHandler = {
-  // Handler for the JSON request that is sent by the Alexa server
-  canHandle(handlerInput) {
-    return handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'HelloWorldIntent';
-  },
-  
-  // Response
-  handle(handlerInput) {
-    const speechText = 'Hello Poor CST students';
-
-    return handlerInput.responseBuilder
-      .speak(speechText)
-      .withSimpleCard('Hello World', speechText)
-      .getResponse();
-  },
-};
-
+/*******************************************************/
 const HelpIntentHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'IntentRequest'
@@ -131,17 +131,17 @@ const ErrorHandler = {
 // Export intents
 exports.handler = skillBuilder.addRequestHandlers(
     LaunchRequestHandler,
-    OptionNameIntentHandler,
+    OptionSelectionIntentHandler,
+    CourseSelectionIntentHandler,
     ExamDateIntentHandler,
-    HelloWorldIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler
   ).addErrorHandlers(ErrorHandler).lambda();
 
 /* TODO:
-    - Ask for option name --> The result(slot) must be out of provided options & if user doesn't answer, skill must ask again
-    - OptionNameIntent
-    - Skill should ask for the course name
-    - Set ID & alias for the courses in slots types
+    - Handle direct question about the course date & time
+    - Handle direct question about the exam place
+    - List the courses that option will have exam on
+    - Implement the data and really output the data
 */
