@@ -20,7 +20,7 @@ const LaunchRequestHandler = {
 };
 
 /**
- * Handles user's option choice and ask for a desired course.
+ * Handles user's option choice and the asks for a course name.
  */
 const OptionSelectionIntentHandler = {
   // Handler for the JSON request that is sent by the Alexa server
@@ -54,7 +54,7 @@ const CourseSelectionIntentHandler = {
 };
 
 /**
- * An intent that is in charge of finding an exam date & time.
+ * Handles direct question about an exam date & time.
  */
 const ExamDateIntentHandler = {
   // Handler for the JSON request that is sent by the Alexa server
@@ -63,10 +63,19 @@ const ExamDateIntentHandler = {
   },
 
   handle(handlerInput) {
-    let courseName = handlerInput.requestEnvelope.request.intent.slots.course.value;
-    const speechText = `Yo! You ask for ${courseName}`;
+    let valid = handlerInput.requestEnvelope.request.intent.slots.course.value;
 
-    return handlerInput.responseBuilder.speak(speechText).getResponse();
+    if (!valid) {
+      return handlerInput.responseBuilder.speak(speechDB.reAskCourse).reprompt(speechDB.reAskCourse).getResponse();
+      
+    } else {
+      let courseName = handlerInput.requestEnvelope.request.intent.slots.course.resolutions.resolutionsPerAuthority;
+      courseName = (((courseName[0].values)[0]).value.name).toLowerCase();
+      const speechText = `Yo! You ask for ${courseName}`;
+
+      return handlerInput.responseBuilder.speak(speechText).getResponse();
+    }
+
   },
 };
 
@@ -77,12 +86,11 @@ const HelpIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
   },
   handle(handlerInput) {
-    const speechText = 'You can say hello to me!';
+    const speechText = 'Haha! Look at this guy, it is asking for help. How can I help you buddy?';
 
     return handlerInput.responseBuilder
       .speak(speechText)
       .reprompt(speechText)
-      .withSimpleCard('Hello World', speechText)
       .getResponse();
   },
 };
@@ -98,7 +106,6 @@ const CancelAndStopIntentHandler = {
 
     return handlerInput.responseBuilder
       .speak(speechText)
-      .withSimpleCard('Hello World', speechText)
       .getResponse();
   },
 };
@@ -122,8 +129,8 @@ const ErrorHandler = {
     console.log(`Error handled: ${error.message}`);
 
     return handlerInput.responseBuilder
-      .speak('Sorry, I can\'t understand the command. Please say again.')
-      .reprompt('Sorry, I can\'t understand the command. Please say again.')
+      .speak('Oops! An error ocurred.')
+      .reprompt('Oops! An error ocurred.')
       .getResponse();
   },
 };
@@ -140,8 +147,8 @@ exports.handler = skillBuilder.addRequestHandlers(
   ).addErrorHandlers(ErrorHandler).lambda();
 
 /* TODO:
-    - Handle direct question about the course date & time
-    - Handle direct question about the exam place
     - List the courses that option will have exam on
     - Implement the data and really output the data
+    - Handle direct question about the exam place
+    - Bug: after asking for option name, user can answer with a course name
 */

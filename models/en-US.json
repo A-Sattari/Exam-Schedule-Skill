@@ -195,6 +195,26 @@
                     ]
                 }
             ]
+        },
+        {
+          "name": "ExamDateIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+              {
+                  "name": "course",
+                  "type": "CourseName",
+                  "confirmationRequired": false,
+                  "elicitationRequired": true,
+                  "prompts": { "elicitation": "Elicit.Slot.52315114902.697154347503" },
+                  "validations": [
+                      {
+                          "type": "hasEntityResolutionMatch",
+                          "prompt": "Slot.Validation.1510864343517.296326178598.409858714657"
+                      }
+                  ]
+              }
+          ]
         }
       ]
     },
@@ -223,8 +243,26 @@
         "variations": [
           {
             "type": "PlainText",
-            "value": "."
+            "value": "huh"
           }
+        ]
+      },
+      {
+        "id": "Slot.Validation.1510864343517.296326178598.409858714657",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What did you just say"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.52315114902.697154347503",
+        "variations": [
+            {
+                "type": "PlainText",
+                "value": "excuse what?"
+            }
         ]
       }
     ]
