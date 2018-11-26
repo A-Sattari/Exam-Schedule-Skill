@@ -30,9 +30,24 @@ const OptionSelectionIntentHandler = {
 
   // Response 
   handle(handlerInput) {
-    // let optionName = handlerInput.requestEnvelope.request.intent.slots.option.value;
-    return handlerInput.responseBuilder.speak(speechDB.thank + speechDB.askCourse)
-            .reprompt(speechDB.askCourse).getResponse();
+    let optionName = handlerInput.requestEnvelope.request.intent.slots.option.resolutions.resolutionsPerAuthority;
+    optionName = (((optionName[0].values)[0]).value.name).toLowerCase();
+
+    switch(optionName) {
+
+      case "cloud":
+        return handlerInput.responseBuilder.speak(speechDB.thank + speechDB.cloudCourses + speechDB.askCourse).reprompt(speechDB.askCourse).getResponse();
+
+      case "web and mobile":
+        return handlerInput.responseBuilder.speak(speechDB.thank + speechDB.webCurses + speechDB.askCourse).reprompt(speechDB.askCourse).getResponse();
+
+      case "ai":
+        return handlerInput.responseBuilder.speak(speechDB.thank + speechDB.AICourses + speechDB.askCourse).reprompt(speechDB.askCourse).getResponse();
+
+      case "database":
+        return handlerInput.responseBuilder.speak(speechDB.thank + speechDB.databaseCourses + speechDB.askCourse).reprompt(speechDB.askCourse).getResponse();
+    }
+
   },
 };
 
@@ -86,7 +101,7 @@ const HelpIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
   },
   handle(handlerInput) {
-    const speechText = 'Haha! Look at this guy, it is asking for help. How can I help you buddy?';
+    const speechText = 'Haha! Look at this guy, it\'s asking for help. How can I help you buddy?';
 
     return handlerInput.responseBuilder
       .speak(speechText)
@@ -102,7 +117,7 @@ const CancelAndStopIntentHandler = {
         || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
   },
   handle(handlerInput) {
-    const speechText = 'Goodbye!';
+    const speechText = 'Oh! Maaan!! Whatever. Bye';
 
     return handlerInput.responseBuilder
       .speak(speechText)
@@ -129,8 +144,8 @@ const ErrorHandler = {
     console.log(`Error handled: ${error.message}`);
 
     return handlerInput.responseBuilder
-      .speak('Oops! An error ocurred.')
-      .reprompt('Oops! An error ocurred.')
+      .speak('Oops! An error occurred.')
+      .reprompt('Oops! An error occurred.')
       .getResponse();
   },
 };
@@ -147,7 +162,6 @@ exports.handler = skillBuilder.addRequestHandlers(
   ).addErrorHandlers(ErrorHandler).lambda();
 
 /* TODO:
-    - List the courses that option will have exam on
     - Implement the data and really output the data
     - Handle direct question about the exam place
     - Bug: after asking for option name, user can answer with a course name
