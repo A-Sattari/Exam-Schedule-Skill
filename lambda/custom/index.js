@@ -1,5 +1,6 @@
 const Alexa = require('ask-sdk-core');
 const speechDB = require('./speechDB');
+const courseInfo = require('./courseInfo');
 
 // Skill builder object
 const skillBuilder = Alexa.SkillBuilders.custom();
@@ -62,8 +63,9 @@ const CourseSelectionIntentHandler = {
   handle(handlerInput) {
     let courseName = handlerInput.requestEnvelope.request.intent.slots.course.resolutions.resolutionsPerAuthority;
     courseName = (((courseName[0].values)[0]).value.name).toLowerCase();
+
+    const speechText = courseInfo.courseSelector(courseName); // Retrieve the course information from courseInfo.js file
     
-    const speechText = `Your choice is ${courseName}`;
     return handlerInput.responseBuilder.speak(speechText).getResponse();
   },
 };
@@ -164,5 +166,6 @@ exports.handler = skillBuilder.addRequestHandlers(
 /* TODO:
     - Implement the data and really output the data
     - Handle direct question about the exam place
+    - If user ask for another option's course, be aware (probably should attach an ID to the course name that represents the option)
     - Bug: after asking for option name, user can answer with a course name
 */

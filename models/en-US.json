@@ -43,6 +43,24 @@
                   "value": "Dev Ops",
                   "synonyms": ["COMP 4964", "devops"]
               }
+            },
+            {
+              "name": {
+                  "value": "Android",
+                  "synonyms": ["COMP 3717", "android development"]
+              }
+            },
+            {
+              "name": {
+                  "value": "Database Systems",
+                  "synonyms": ["COMP 4821", "database systems 2"]
+              }
+            },
+            {
+              "name": {
+                  "value": "IOS",
+                  "synonyms": ["COMP 4977", "ios development", "ios mobile development"]
+              }
             }
           ]
         },
