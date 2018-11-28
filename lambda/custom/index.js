@@ -71,7 +71,7 @@ const CourseSelectionIntentHandler = {
 };
 
 /**
- * Handles direct question about an exam date & time.
+ * Handles direct question about an exam information.
  */
 const ExamDateIntentHandler = {
   // Handler for the JSON request that is sent by the Alexa server
@@ -82,13 +82,14 @@ const ExamDateIntentHandler = {
   handle(handlerInput) {
     let valid = handlerInput.requestEnvelope.request.intent.slots.course.value;
 
-    if (!valid) {
+    if (!valid) { // If the there is no such course
       return handlerInput.responseBuilder.speak(speechDB.reAskCourse).reprompt(speechDB.reAskCourse).getResponse();
       
     } else {
       let courseName = handlerInput.requestEnvelope.request.intent.slots.course.resolutions.resolutionsPerAuthority;
       courseName = (((courseName[0].values)[0]).value.name).toLowerCase();
-      const speechText = `Yo! You ask for ${courseName}`;
+
+      const speechText = courseInfo.courseSelector(courseName); // Retrieve the course information from courseInfo.js file
 
       return handlerInput.responseBuilder.speak(speechText).getResponse();
     }
@@ -96,7 +97,7 @@ const ExamDateIntentHandler = {
   },
 };
 
-/*******************************************************/
+/**********************************************************/
 const HelpIntentHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'IntentRequest'
@@ -164,7 +165,6 @@ exports.handler = skillBuilder.addRequestHandlers(
   ).addErrorHandlers(ErrorHandler).lambda();
 
 /* TODO:
-    - Implement the data and really output the data
     - Handle direct question about the exam place
     - If user ask for another option's course, be aware (probably should attach an ID to the course name that represents the option)
     - Bug: after asking for option name, user can answer with a course name

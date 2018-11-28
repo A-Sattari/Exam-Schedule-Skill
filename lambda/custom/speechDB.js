@@ -8,7 +8,7 @@ const cloudCourses  = 'Here is the list of Cloud Computing Option courses: DevOp
     Intro to Internet Software Development, and Business Law. ';
 const AICourses  = 'Here is the list of A.I Option courses: Statistics, Operating Systems,\
     Intro to Internet Software Development, and Business Law. ';
-const databaseCourses  = 'Here is the list of Database Option courses: Android Development, Statistics, Operating Systems,\
+const databaseCourses  = 'Here is the list of Database Option courses: Android Development, Database Systems 2,Statistics, Operating Systems,\
     Intro to Internet Software Development, and Business Law. ';
 const webCourses  = 'Here is the list of Web and Mobile Option courses: IOS Development, ASP .NET, Statistics, Operating Systems,\
     Intro to Internet Software Development, and Business Law. ';
